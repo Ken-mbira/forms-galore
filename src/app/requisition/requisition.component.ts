@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-requisition',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './requisition.component.html',
   styleUrl: './requisition.component.css'
 })
