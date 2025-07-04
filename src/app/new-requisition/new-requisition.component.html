@@ -1,8 +1,58 @@
-<div class="flex flex-col items-center justify-center h-screen">
-    <h1>Create Requisition</h1>
-    <form>
-        <div>
-            <input>
-        </div>
-    </form>
+<div class="flex flex-col h-screen items-center p-2">
+    <h1 class="text-2xl mb-2 font-bold">New Requisition</h1>
+    @if(requisitionForm) {
+        <form [formGroup]="requisitionForm" class="w-full max-w-lg p-10 bg-white rounded-lg shadow-md">
+            <div class="flex flex-col gap-2 mb-4">
+                <label for="name">Name of Requisition</label>
+                <input class="border border-gray-300 rounded-md p-2 placeholder-gray-400" type="text" formControlName="name" placeholder="Name of Requisition">
+                @if(requisitionForm.get('name') && requisitionForm.get('name')!!.invalid && (requisitionForm.get('name')!!.dirty || requisitionForm.get('name')!!.touched)) {
+                    <span class="text-red-400 mt-2">Name is required!</span>
+                }
+            </div>
+
+            <div class="flex flex-col gap-2 mb-4">
+                <label for="category">Category</label>
+
+                <div class="w-full border-1 rounded-lg p-2 flex gap-2 flex-wrap">
+                    @if(requisitionForm.get('category')!!.value) {
+                        @for(item of requisitionForm.get('category')!!.value; track $index; let idx = $index) {
+                            <div class="w-fit bg-gray-400 rounded-4xl p-1.5 flex justify-between gap-3">
+                                <span
+                                    [ngClass]="
+                                        requisitionForm.get('category')!!.hasError('invalidOptions') &&
+                                        requisitionForm.get('category')!!.getError('invalidOptions')?.includes(idx) ?
+                                        'underline decoration-wavy decoration-red-400': ''"
+                                >{{item}}</span>
+                                <button type="button" (click)="removeCategory(idx)" class="cursor-pointer">x</button>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <input class="border border-gray-300 rounded-md p-2 placeholder-gray-400" type="text" name="category" [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Type in the category name" (keydown.Enter)="newCategory();false">
+            </div>
+
+            <div class="flex flex-col gap-2 mb-4">
+                <label for="department">Department</label>
+
+                <div class="w-full border-1 rounded-lg p-2 flex gap-2 flex-wrap">
+                    @if(requisitionForm.get('department')!!.value) {
+                        @for(item of requisitionForm.get('department')!!.value; track $index; let idx = $index) {
+                            <div class="w-fit bg-gray-400 rounded-4xl p-1.5 flex justify-between gap-3">
+                                <span
+                                    [ngClass]="
+                                        requisitionForm.get('department')!!.hasError('invalidOptions') &&
+                                        requisitionForm.get('department')!!.getError('invalidOptions')?.includes(idx) ?
+                                        'underline decoration-wavy decoration-red-400': ''"
+                                >{{item}}</span>
+                                <button type="button" (click)="removeDepartment(idx)" class="cursor-pointer">x</button>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <input class="border border-gray-300 rounded-md p-2 placeholder-gray-400" type="text" name="department" [(ngModel)]="newDepartmentName" [ngModelOptions]="{standalone: true}" placeholder="Type in the department name" (keydown.Enter)="newDepartment();false">
+            </div>
+        </form>
+    }
 </div>
