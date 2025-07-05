@@ -34,11 +34,7 @@ export class NewRequisitionComponent {
   }
 
   get requisitionItems() {
-    if(this.requisitionForm?.get('items')) {
-      return this.requisitionForm.get('items') as FormArray;
-    } else {
-      return undefined;
-    }
+    return this.requisitionForm?.get('items') ? this.requisitionForm.get('items') as FormArray : undefined;
   }
 
   newDepartment() {
@@ -67,6 +63,32 @@ export class NewRequisitionComponent {
     currentDepartments.splice(departmentIndex, 1);
 
     this.requisitionForm!!.patchValue({'department': currentDepartments});
+  }
+
+  newRequisitionItem() {
+    if (!this.requisitionForm) return;
+
+    const newItem = this.fb.group({
+      name: ['', Validators.required],
+      category: ['', Validators.required],
+      description: ['', Validators.required],
+      quantity: ['', Validators.required],
+      price: ['', Validators.required],
+    })
+
+    this.requisitionItems?.push(newItem);
+  }
+
+  removeRequisitionItem(itemIndex: number) {
+    if (!this.requisitionForm) return;
+
+    this.requisitionItems?.removeAt(itemIndex);
+  }
+
+  setCategoryField(category: string, itemIndex: number){
+    if (!this.requisitionForm) return;
+
+    this.requisitionItems?.at(itemIndex).get('category');
   }
 }
 
