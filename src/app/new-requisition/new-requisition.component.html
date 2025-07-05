@@ -37,9 +37,9 @@
                     <p class="mt-8 mb-2 font-bold">List of Items</p>
                     <button type="button" (click)="newRequisitionItem()" class="bg-gray-500 text-white px-4 py-2 rounded-md">Add Item</button>
                 </div>
-                <div formArrayName="requisitionItems">
+                <div formArrayName="items">
                     @for(itemForm of requisitionItems.controls; track $index; let idx = $index) {
-                        <div formGroupName="itemForm" class="flex gap-2">
+                        <div formGroupName="idx" class="flex gap-2">
                             <div class="flex flex-col">
                                 <label for="name">Name</label>
                                 <input class="border border-gray-300 rounded-md p-2 placeholder-gray-400" type="text" formControlName="name">
