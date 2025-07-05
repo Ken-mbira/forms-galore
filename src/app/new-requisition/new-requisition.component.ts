@@ -12,7 +12,6 @@ export class NewRequisitionComponent {
   requisitionForm?: FormGroup;
 
   listOfCategories = ['Stationary', 'Transportation', 'IT', 'Wellness'];
-  newCategoryName = "";
 
   listOfDepartments = ['Finance', 'Logistics', 'IT', 'Marketing'];
   newDepartmentName = "";
@@ -20,43 +19,26 @@ export class NewRequisitionComponent {
   constructor (private fb: FormBuilder) {
     this.requisitionForm = this.fb.group({
       name: ['', Validators.required],
-      category: [[], [Validators.required, invalidOptions(this.listOfCategories)]], // we should remove category
       department: [[], [Validators.required, invalidOptions(this.listOfCategories)]],
-      items: new FormArray([
+      items: this.fb.array([
         this.fb.group({
           name: ['', Validators.required],
           category: ['', Validators.required],
+          description: ['', Validators.required],
+          quantity: ['', Validators.required],
+          price: ['', Validators.required],
         })
       ])
     });
+
   }
 
-  newCategory() {
-    if (!this.requisitionForm) return;
-
-    const categoryText = this.newCategoryName;
-
-    if (!categoryText) return;
-
-    const currentCategories = this.requisitionForm!!.get('category')!!.value;
-
-    currentCategories.push(categoryText);
-
-    this.requisitionForm!!.patchValue({'category': currentCategories});
-
-    this.newCategoryName = "";
-  }
-
-  removeCategory(categoryIndex: number) {
-    if (!this.requisitionForm) return;
-
-    let currentCategories = this.requisitionForm!!.get('category')!!.value;
-
-    if(!currentCategories) return;
-
-    currentCategories.splice(categoryIndex, 1);
-
-    this.requisitionForm!!.patchValue({'category': currentCategories});
+  get requisitionItems() {
+    if(this.requisitionForm?.get('items')) {
+      return this.requisitionForm.get('items') as FormArray;
+    } else {
+      return undefined;
+    }
   }
 
   newDepartment() {
